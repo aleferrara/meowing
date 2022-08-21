@@ -41,7 +41,10 @@ public class MainActivity extends AppCompatActivity {
 
         setupDrawerContent(navigationView);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FirstFragment()).commit();
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FirstFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_first_fragment);
+        }
 
     }
 
