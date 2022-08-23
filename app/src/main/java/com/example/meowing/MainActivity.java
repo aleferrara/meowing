@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
         setupDrawerContent(navigationView);
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FirstFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_first_fragment);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainListFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_home);
         }
 
     }
@@ -85,17 +85,17 @@ public class MainActivity extends AppCompatActivity {
         Fragment fragment = null;
         Class fragmentClass;
         switch(menuItem.getItemId()) {
-            case R.id.nav_first_fragment:
-                fragmentClass = FirstFragment.class;
+            case R.id.nav_home:
+                fragmentClass = MainListFragment.class;
                 break;
-            case R.id.nav_second_fragment:
-                fragmentClass = SecondFragment.class;
+            case R.id.nav_list:
+                fragmentClass = UserListFragment.class;
                 break;
             case R.id.nav_third_fragment:
                 fragmentClass = ThirdFragment.class;
                 break;
             default:
-                fragmentClass = FirstFragment.class;
+                fragmentClass = MainListFragment.class;
         }
 
         try {

@@ -1,15 +1,20 @@
 package com.example.meowing;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
-import com.example.meowing.databinding.FragmentFirstBinding;
+import com.example.meowing.databinding.FragmentMainListBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,20 +23,16 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class FirstFragment extends Fragment {
+public class MainListFragment extends Fragment {
 
-    FragmentFirstBinding binding;
-    private DatabaseReference catsReference;
+    FragmentMainListBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-//        return inflater.inflate(R.layout.fragment_first, container, false);
-
-        binding = FragmentFirstBinding.inflate(getLayoutInflater());
-
-        catsReference = FirebaseDatabase.getInstance().getReference("Ospiti");
+        binding = FragmentMainListBinding.inflate(getLayoutInflater());
+        DatabaseReference catsReference = FirebaseDatabase.getInstance().getReference("Ospiti");
         ArrayList<Cat> catArrayList = new ArrayList<>();
 
         catsReference.addValueEventListener(new ValueEventListener() {
@@ -53,8 +54,27 @@ public class FirstFragment extends Fragment {
                 binding.listViewID.setAdapter(listAdapter);
                 binding.listViewID.deferNotifyDataSetChanged();
                 binding.listViewID.setClickable(true);
+                binding.listViewID.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+                        Cat cat = (Cat) adapterView.getItemAtPosition(i);
+                        Bundle data = new Bundle();
+                        data.putString("nome", cat.getNome());
+                        data.putString("eta", cat.getEta());
+                        data.putString("sesso", cat.getSesso());
+                        data.putString("razza", cat.getRazza());
+                        data.putString("image", cat.getImage());
+                        data.putString("chiave", cat.getChiave());
+                        CatProfileFragment catProfileFragment = new CatProfileFragment();
+                        catProfileFragment.setArguments(data);
+                        FragmentManager fragmentManager = getFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.fragment_container, catProfileFragment);
+                        fragmentTransaction.commit();
 
+                    }
+                });
 
             }
 
