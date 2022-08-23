@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -80,7 +82,20 @@ public class UserListFragment extends Fragment {
                                 binding.pvtList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                                        Cat cat = (Cat) adapterView.getItemAtPosition(i);
+                                        Bundle data = new Bundle();
+                                        data.putString("nome", cat.getNome());
+                                        data.putString("eta", cat.getEta());
+                                        data.putString("sesso", cat.getSesso());
+                                        data.putString("razza", cat.getRazza());
+                                        data.putString("image", cat.getImage());
+                                        data.putString("chiave", cat.getChiave());
+                                        CatProfileFragment catProfileFragment = new CatProfileFragment();
+                                        catProfileFragment.setArguments(data);
+                                        FragmentManager fragmentManager = getFragmentManager();
+                                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                        fragmentTransaction.replace(R.id.fragment_container, catProfileFragment);
+                                        fragmentTransaction.commit();
                                     }
                                 });
                             }

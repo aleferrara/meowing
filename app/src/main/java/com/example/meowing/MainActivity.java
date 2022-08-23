@@ -8,16 +8,21 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final String LOGPREF = "loginSaved";
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private NavigationView navigationView;
+    private SharedPreferences sharedPreferences;
 
     private ActionBarDrawerToggle drawerToggle;
 
@@ -25,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sharedPreferences = this.getSharedPreferences(LOGPREF, this.MODE_PRIVATE);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -93,6 +100,15 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.nav_third_fragment:
                 fragmentClass = ThirdFragment.class;
+                break;
+            case R.id.nav_logout:
+                FirebaseAuth.getInstance().signOut();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.clear();
+                editor.commit();
+                startActivity(new Intent(MainActivity.this, Login.class));
+                drawerLayout.closeDrawer(GravityCompat.START);
+                fragmentClass = MainListFragment.class;
                 break;
             default:
                 fragmentClass = MainListFragment.class;
