@@ -98,8 +98,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_list:
                 fragmentClass = UserListFragment.class;
                 break;
-            case R.id.nav_third_fragment:
-                fragmentClass = ThirdFragment.class;
+            case R.id.nav_pren:
+                fragmentClass = PrenFragment.class;
                 break;
             case R.id.nav_logout:
                 FirebaseAuth.getInstance().signOut();
